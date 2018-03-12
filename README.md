@@ -27,7 +27,7 @@ Please feel free to edit/optimize the logics of the script if needed
 
 ## Prerequisites
 
-Please place the filled `configuration.json` in the same directory. It should includes the Azure Batch AI authentication information and credentials of the Storage Account `octopustext`.
+Please place the filled `configuration.json` in the same directory based on the [template](https://github.com/Azure/BatchAI/blob/master/recipes/configuration.json.template). It should includes the Azure Batch AI authentication information and credentials of the Storage Account `octopustext`.
 
 Install Azure Batch AI management client using the following command:
  
