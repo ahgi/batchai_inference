@@ -55,9 +55,9 @@ This Jupyter Notebook file contains information on how to run Batch Scoring job 
 
 ## Benchmark Results:
 
-The below table illustrated elapsed time to process 100k images for `'cloth_inference'`:
+The below table illustrates elapsed time to label 100k images for `'cloth_inference'`task:
 
-| Cluster/GPU     |       1       |      8     |      16    |     32     |
+|  Num of GPU     |       1       |      8     |      16    |     32     |
 | --------------- |:-------------:| ----------:| ----------:| ----------:|
 | K80             |  741 mins     |   99 mins  |   49 mins  |  25 mins   |
 | P100            |  255 mins     |   32 mins  |   19 mins  |  10 mins   |
