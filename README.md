@@ -17,7 +17,7 @@ The main script used for the scoring job `dist_inference.py` locates in the root
 
 The input argument `'--inference'` is used to specify the scoring task: `'cloth_recognition'` or `'classification'`. The main idea is to shad the whole dataset into partitions based on the total number of workers, and each work process its assigned partition of images independently. There is no inter-communication between each work. 
 
-When the scirpt completes, it outputs the total number of images it processed and how long it took, such as:
+When the script completes, it outputs the total number of images it processed and how long it took, such as:
 
  ```sh
  Worker 0 Processed 3124 images, took 0:10:43.983157
@@ -53,12 +53,25 @@ python -m pip install jupyter
 
 This Jupyter Notebook file contains information on how to run Batch Scoring job on a GPU node with BatchAI. You will be able to tune variables including `node_count`, `vm_size` to obtain different benchmark results.
 
-## Benchmark Results:
+Note that, since there is no communication between each worker, Parameter Server is not required in this case. Therefore, we use the `customToolkitSettings` in the Batch AI job definition (instead of `TensorFlowSettings`) and use OpenMPI to launch and monitor all workers more efficiently. The OpenMPI binary is installed in container using `JobPreparation` task.
 
-The below table illustrates elapsed time to label 100k images for `'cloth_inference'`task:
+## Benchmark Results
 
-|  Num of GPU     |       1       |      8     |      16    |     32     |
+The below table illustrates elapsed time to label 100k images for `'cloth_inference'`(VGG-16) task:
+
+|  Number of GPUs |       1       |      8     |      16    |     32     |
 | --------------- |:-------------:| ----------:| ----------:| ----------:|
 | K80             |  741 mins     |   99 mins  |   49 mins  |  25 mins   |
 | P100            |  255 mins     |   32 mins  |   19 mins  |  10 mins   |
 
+Qusi-linear scaling-up can be observed in terms of number of GPUs. 
+
+The benchmark for `'classification'`(Inception-V3) task has not been done yet. The test code needs to be optimized to achieve higher GPU efficiency.
+
+## Reference
+
+- To transfer large amount of data between local device and Azure Storage, please use [AzCopy](https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy) or [Blobxfer](https://github.com/Azure/blobxfer/blob/master/docs/10-cli-usage.md) instead of Portal/Storage Explorer
+
+- A detail reference of Batch AI python SDK can be found [here](https://docs.microsoft.com/en-us/python/api/azure.mgmt.batchai?view=azure-python)
+
+- If you prefer to use Azure CLI 2.0 instead of python SDK, please see the [article](https://github.com/Azure/BatchAI/blob/master/documentation/using-azure-cli-20.md) for instruction.
